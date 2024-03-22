@@ -35,7 +35,7 @@ const Navbar = () => {
           <PlusOutlined />
         </Button>
         <Modal
-          className="px-[10px"
+          className="px-[10px]"
           title="Your Cart"
           open={isModalOpen}
           onOk={handleOk}
