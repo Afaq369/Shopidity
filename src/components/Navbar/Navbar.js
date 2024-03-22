@@ -1,10 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Image, Modal, Row } from 'antd';
+import { Button, Col, Divider, Image, Modal, Row } from 'antd';
 import React, { useState } from 'react';
 import { Items } from '../Home/Home';
 
 const Navbar = () => {
-  const firstItem = Items[0];
+  const firstItem = Items;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -28,11 +28,15 @@ const Navbar = () => {
         className="flex flex-row justify-end items-center gap-x-[10px]"
       >
         <h1 className="font-medium text-[24px]">Cart</h1>
-        <Button onClick={showModal} className="flex justify-center items-center rounded-[100%] p-[10px]">
+        <Button
+          onClick={showModal}
+          className="flex justify-center items-center rounded-[100%] p-[10px]"
+        >
           <PlusOutlined />
         </Button>
         <Modal
-          title={firstItem.name}
+          className="px-[10px"
+          title="Your Cart"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -41,18 +45,43 @@ const Navbar = () => {
               Cancel
             </Button>,
             <Button key="submit" onClick={handleOk}>
-              Add to Cart
+              Buy These
             </Button>,
           ]}
         >
-          <Image src={firstItem.src} width={'100%'} alt="Image" preview={false} />
-          <div className="flex flex-row justify-between py-1">
-            <h1 className="font-medium text-[20px]">{firstItem.name}</h1>
-            <h3 className="font-medium text-[18px]">{firstItem.price}</h3>
-          </div>
-          <div>
-            <h3 className="font-medium text-[18px]">{firstItem.decs}</h3>
-          </div>
+          <Row className="flex justify-between font-bold">
+            <Col md={6} sm={5} xs={5} className="flex justify-start">
+              Name
+            </Col>
+            <Col md={6} sm={5} xs={5} className="flex justify-center">
+              Quantity
+            </Col>
+            <Col md={6} sm={5} xs={5} className="flex justify-center">
+              Price
+            </Col>
+            <Col md={6} sm={5} xs={5} className="flex justify-end">
+              Total
+            </Col>
+            <Divider className="my-[8px]" />
+          </Row>
+          {firstItem.map((list) => (
+            <Row key={list.id} className="flex justify-between">
+              <Col md={6} sm={5} xs={5} className="flex justify-start">
+                {list.name}
+              </Col>
+              <Col md={6} sm={5} xs={5} className="flex justify-center">
+                Quantity
+              </Col>
+              <Col md={6} sm={5} xs={5} className="flex justify-center">
+                {list.price}
+              </Col>
+              <Col md={6} sm={5} xs={5} className="flex justify-end">
+                Total
+              </Col>
+              <Divider className="my-[5px]" />
+            </Row>
+            // <div>{list.name}</div>
+          ))}
         </Modal>
       </Col>
     </Row>

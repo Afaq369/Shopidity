@@ -24,7 +24,7 @@ const Card = ({ src, name, price, decs }) => {
   };
   return (
     <Row className="max-w-[350px] p-[20px] rounded-[20px] shadow-2xl bg-[#f0f8ff]">
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center">
         <Image src={src} width={'100%'} alt="Image" preview={false} />
       </div>
       <div className="w-full flex flex-row justify-between items-center py-2">
@@ -35,9 +35,9 @@ const Card = ({ src, name, price, decs }) => {
         <div>
           <Button
             onClick={showModal}
-            className="rounded-[20px] w-[80px] font-semibold"
+            className="rounded-[20px] px-[20px] font-semibold"
           >
-            Buy
+            Add to Cart
           </Button>
           <Modal
             title={name}
@@ -50,7 +50,7 @@ const Card = ({ src, name, price, decs }) => {
               </Button>,
               <Button onClick={decrementCount}>-</Button>,
               <Button key="submit" onClick={handleOk}>
-                Add to Cart {count}
+                Buy - {count}
               </Button>,
               <Button onClick={incrementCount}>+</Button>,
             ]}
