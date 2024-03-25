@@ -1,10 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Image, Modal, Row } from 'antd';
+import { Button, Col, Divider, Modal, Row } from 'antd';
 import React, { useState } from 'react';
-import { Items } from '../Home/Home';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-  const firstItem = Items;
+  const firstItem = useSelector((state) => state.product.products);
+  console.log('Selector===>', firstItem);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -14,6 +15,13 @@ const Navbar = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  const [quantity, setQuantity] = useState(1);
+  const increaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+  const decreaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity - 1);
   };
   return (
     <Row className="flex justify-center items-center fixed h-[100px] w-[100%] px-[60px] top-0  bg-[#f0f8ff] z-50">
@@ -56,7 +64,7 @@ const Navbar = () => {
             <Col md={6} sm={5} xs={5} className="flex justify-center">
               Quantity
             </Col>
-            <Col md={6} sm={5} xs={5} className="flex justify-center">
+            <Col md={6} sm={5} xs={5} className="flex justify-center pl-8">
               Price
             </Col>
             <Col md={6} sm={5} xs={5} className="flex justify-end">
@@ -64,23 +72,41 @@ const Navbar = () => {
             </Col>
             <Divider className="my-[8px]" />
           </Row>
-          {firstItem.map((list) => (
-            <Row key={list.id} className="flex justify-between">
-              <Col md={6} sm={5} xs={5} className="flex justify-start">
-                {list.name}
-              </Col>
-              <Col md={6} sm={5} xs={5} className="flex justify-center">
-                Quantity
-              </Col>
-              <Col md={6} sm={5} xs={5} className="flex justify-center">
-                {list.price}
-              </Col>
-              <Col md={6} sm={5} xs={5} className="flex justify-end">
-                Total
-              </Col>
-              <Divider className="my-[5px]" />
-            </Row>
-            // <div>{list.name}</div>
+          {firstItem.map((product) => (
+            <div>
+              <Row key={product.id} className="flex justify-between">
+                <Col md={6} sm={5} xs={5} className="flex justify-start">
+                  {product.name}
+                </Col>
+                <Col
+                  md={6}
+                  sm={5}
+                  xs={5}
+                  className="flex justify-center items-center gap-x-[15px]"
+                >
+                  <Button
+                    className="h-[20px] w-[20px] flex justify-center items-center"
+                    onClick={decreaseQuantity}
+                  >
+                    -
+                  </Button>
+                  {quantity}
+                  <Button
+                    className="h-[20px] w-[20px] flex justify-center items-center"
+                    onClick={increaseQuantity}
+                  >
+                    +
+                  </Button>
+                </Col>
+                <Col md={6} sm={5} xs={5} className="flex justify-center pl-8">
+                  {product.price}
+                </Col>
+                <Col md={6} sm={5} xs={5} className="flex justify-end">
+                  {quantity * product.price}
+                </Col>
+                <Divider className="my-[5px]" />
+              </Row>
+            </div>
           ))}
         </Modal>
       </Col>

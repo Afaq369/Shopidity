@@ -77,14 +77,14 @@ export const Items = [
     id: 11,
     src: '/assets/images/product-12.jpg',
     price: 500,
-    name: 'Product - 12',
+    name: 'Product - 11',
     decs: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum.',
   },
   {
     id: 12,
     src: '/assets/images/product-11.jpg',
     price: 300,
-    name: 'Product - 11',
+    name: 'Product - 12',
     decs: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum.',
   },
 ];
@@ -95,6 +95,7 @@ const Home = () => {
       {Items.map((item) => (
         <Col key={item.id}>
           <Card
+            id={item.id}
             src={item.src}
             name={item.name}
             price={item.price}

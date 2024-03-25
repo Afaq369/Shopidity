@@ -1,23 +1,27 @@
 import { Button, Image, Modal, Row } from 'antd';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { carted } from './cardSlice';
 
-const Card = ({ src, name, price, decs }) => {
+const Card = ({ id, src, name, price, decs }) => {
+  const dispatch = useDispatch();
+  const numOfProduct = useSelector((state) => state.product.products[id] || 0);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [count, setCount] = useState(1)
-  const incrementCount = () => {
-    setCount((currentCount) => currentCount + 1);
-  };
-
-  const decrementCount = () => {
-    // Ensure count does not go below 1
-    setCount((currentCount) => Math.max(1, currentCount - 1));
-  };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
     setIsModalOpen(false);
+    dispatch(
+      carted({
+        productId: id,
+        quantity: numOfProduct,
+        Name: name,
+        Price: price,
+      })
+    );
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -36,8 +40,9 @@ const Card = ({ src, name, price, decs }) => {
           <Button
             onClick={showModal}
             className="rounded-[20px] px-[20px] font-semibold"
+            // disabled={true}
           >
-            Add to Cart
+            Buy
           </Button>
           <Modal
             title={name}
@@ -48,11 +53,9 @@ const Card = ({ src, name, price, decs }) => {
               <Button key="back" onClick={handleCancel}>
                 Cancel
               </Button>,
-              <Button onClick={decrementCount}>-</Button>,
               <Button key="submit" onClick={handleOk}>
-                Buy - {count}
+                Add to Cart
               </Button>,
-              <Button onClick={incrementCount}>+</Button>,
             ]}
           >
             <Image src={src} width={'100%'} alt="Image" preview={false} />
