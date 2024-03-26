@@ -10,10 +10,13 @@ const productSlice = createSlice({
   reducers: {
     carted: (state, action) => {
       const { productId, Name, Price } = action.payload;
-      state.products.push({ id:productId, name: Name, price: Price });
+      state.products.push({ id: productId, name: Name, price: Price });
+    },
+    bought: (state) => {
+      state.products = [];
     },
   },
 });
 
 export default productSlice.reducer;
-export const { addProduct, subtractProduct, carted } = productSlice.actions;
+export const { bought, carted } = productSlice.actions;
