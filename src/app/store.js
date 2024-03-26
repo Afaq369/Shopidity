@@ -3,7 +3,8 @@ import productReducer from '../components/Cards/cardSlice'
 
 const store = configureStore({
   reducer: {
-    product:productReducer,
+    product: productReducer,
+    // ui: uiReducer,
   }
 })
 

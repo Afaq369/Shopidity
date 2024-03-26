@@ -1,27 +1,49 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Divider, Modal, Row } from 'antd';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { bought } from '../Cards/cardSlice';
 
 const Navbar = () => {
   const firstItem = useSelector((state) => state.product.products);
-  console.log('Selector===>', firstItem);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
     setIsModalOpen(false);
+    dispatch(bought());
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const [quantity, setQuantity] = useState(1);
-  const increaseQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+  const [quantity, setQuantity] = useState({});
+
+  useEffect(() => {
+    if (firstItem) {
+      const initialQuantities = {};
+      firstItem.forEach((product) => {
+        initialQuantities[product.id] = 1; // Initialize quantity to 1 for each product
+      });
+      setQuantity(initialQuantities);
+    }
+  }, [firstItem]);
+
+  const increaseQuantity = (id) => {
+    setQuantity((prevQuantity) => ({
+      ...prevQuantity,
+      [id]: (prevQuantity[id] || 0) + 1,
+    }));
   };
-  const decreaseQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity - 1);
+
+  const decreaseQuantity = (id) => {
+    if (quantity[id] > 1) {
+      setQuantity((prevQuantity) => ({
+        ...prevQuantity,
+        [id]: Math.max(0, (prevQuantity[id] || 1) - 1),
+      }));
+    }
   };
   return (
     <Row className="flex justify-center items-center fixed h-[100px] w-[100%] px-[60px] top-0  bg-[#f0f8ff] z-50">
@@ -73,40 +95,38 @@ const Navbar = () => {
             <Divider className="my-[8px]" />
           </Row>
           {firstItem.map((product) => (
-            <div>
-              <Row key={product.id} className="flex justify-between">
-                <Col md={6} sm={5} xs={5} className="flex justify-start">
-                  {product.name}
-                </Col>
-                <Col
-                  md={6}
-                  sm={5}
-                  xs={5}
-                  className="flex justify-center items-center gap-x-[15px]"
+            <Row key={product.id} className="flex justify-between">
+              <Col md={6} sm={5} xs={5} className="flex justify-start">
+                {product.name}
+              </Col>
+              <Col
+                md={6}
+                sm={5}
+                xs={5}
+                className="flex justify-center items-center gap-x-[15px]"
+              >
+                <Button
+                  className="h-[20px] w-[20px] flex justify-center items-center"
+                  onClick={() => decreaseQuantity(product.id)}
                 >
-                  <Button
-                    className="h-[20px] w-[20px] flex justify-center items-center"
-                    onClick={decreaseQuantity}
-                  >
-                    -
-                  </Button>
-                  {quantity}
-                  <Button
-                    className="h-[20px] w-[20px] flex justify-center items-center"
-                    onClick={increaseQuantity}
-                  >
-                    +
-                  </Button>
-                </Col>
-                <Col md={6} sm={5} xs={5} className="flex justify-center pl-8">
-                  {product.price}
-                </Col>
-                <Col md={6} sm={5} xs={5} className="flex justify-end">
-                  {quantity * product.price}
-                </Col>
-                <Divider className="my-[5px]" />
-              </Row>
-            </div>
+                  -
+                </Button>
+                {quantity[product.id] || 0}
+                <Button
+                  className="h-[20px] w-[20px] flex justify-center items-center"
+                  onClick={() => increaseQuantity(product.id)}
+                >
+                  +
+                </Button>
+              </Col>
+              <Col md={6} sm={5} xs={5} className="flex justify-center pl-8">
+                ${product.price}
+              </Col>
+              <Col md={6} sm={5} xs={5} className="flex justify-end">
+                ${(quantity[product.id] || 0) * product.price}
+              </Col>
+              <Divider className="my-[5px]" />
+            </Row>
           ))}
         </Modal>
       </Col>
