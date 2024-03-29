@@ -1,6 +1,8 @@
 import React from 'react';
-import Card from '../Cards/Card';
+import Card from './Cards/Card';
 import { Col, Row } from 'antd';
+// import Modal from '../Cards/Modal';
+
 
 export const Items = [
   {
@@ -103,6 +105,7 @@ const Home = () => {
           />
         </Col>
       ))}
+      {/* <Modal  /> */}
     </Row>
   );
 };
