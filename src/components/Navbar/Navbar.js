@@ -50,9 +50,9 @@ const Navbar = () => {
     dispatch(deleteProduct(id));
   };
   // GRAND TOTAL
-  console.log("firstItem===>", quantity)
+  console.log('firstItem===>', quantity);
   const grandTotal = firstItem.reduce((total, product) => {
-    return total + ((quantity[product.id] || 0) * product.price);
+    return total + (quantity[product.id] || 0) * product.price;
   }, 0);
 
   return (
@@ -72,9 +72,9 @@ const Navbar = () => {
         <Badge count={firstItem.length}>
           <Button
             onClick={showModal}
-            className="flex justify-center items-center rounded-[100%] p-[10px]"
+            className="flex justify-center items-center rounded-[100%] h-full w-full p-[10px]"
           >
-            <ShoppingCartOutlined />
+            <ShoppingCartOutlined className="text-[20px]" />
           </Button>
         </Badge>
         <Modal
@@ -88,7 +88,7 @@ const Navbar = () => {
             <div className="flex justify-between">
               <h2>Grand Total- ${grandTotal}</h2>
               <div>
-                <Button className='mr-[10px]' key="back" onClick={handleCancel}>
+                <Button className="mr-[10px]" key="back" onClick={handleCancel}>
                   Cancel
                 </Button>
                 <Button key="submit" onClick={handleOk}>
@@ -99,23 +99,48 @@ const Navbar = () => {
           ]}
         >
           <Row className="flex justify-between font-bold">
-            <Col md={5} sm={5} xs={5} className="flex justify-start items-center">
+            <Col
+              md={5}
+              sm={5}
+              xs={5}
+              className="flex justify-start items-center"
+            >
               Name
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center items-center">
+            <Col
+              md={5}
+              sm={5}
+              xs={5}
+              className="flex justify-center items-center"
+            >
               Quantity
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
+            <Col
+              md={5}
+              sm={5}
+              xs={5}
+              className="flex justify-center items-center pl-8"
+            >
               Price
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
+            <Col
+              md={5}
+              sm={5}
+              xs={5}
+              className="flex justify-center items-center pl-8"
+            >
               Total
             </Col>
             <Divider className="my-[8px]" />
           </Row>
           {firstItem.map((product) => (
             <Row key={product.id} className="flex justify-between">
-              <Col md={5} sm={5} xs={5} className="flex justify-start items-center">
+              <Col
+                md={5}
+                sm={5}
+                xs={5}
+                className="flex justify-start items-center"
+              >
                 {product.name}
               </Col>
               <Col
@@ -138,10 +163,20 @@ const Navbar = () => {
                   +
                 </Button>
               </Col>
-              <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
+              <Col
+                md={5}
+                sm={5}
+                xs={5}
+                className="flex justify-center items-center pl-8"
+              >
                 ${product.price}
               </Col>
-              <Col md={5} sm={5} xs={5} className="flex justify-end items-center gap-x-1">
+              <Col
+                md={5}
+                sm={5}
+                xs={5}
+                className="flex justify-end items-center gap-x-1"
+              >
                 <div>${(quantity[product.id] || 0) * product.price}</div>
                 <Button
                   onClick={() => deletitem(product.id)}
