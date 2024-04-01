@@ -72,9 +72,9 @@ const Navbar = () => {
         <Badge count={firstItem.length}>
           <Button
             onClick={showModal}
-            className="flex justify-center items-center rounded-[100%] p-[10px]"
+            className="flex justify-center items-center rounded-[100%] h-full w-full p-[10px]"
           >
-            <ShoppingCartOutlined />
+            <ShoppingCartOutlined className="text-[20px]" />
           </Button>
         </Badge>
         <Modal
