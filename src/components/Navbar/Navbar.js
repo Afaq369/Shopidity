@@ -1,5 +1,5 @@
 import { DeleteOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, Divider, Modal, Row } from 'antd';
+import { Badge, Button, message, Col, Divider, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { bought, deleteProduct } from '../Cards/cardSlice';
@@ -10,12 +10,21 @@ const Navbar = () => {
   const dispatch = useDispatch();
   // FOR MODAL
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
     setIsModalOpen(false);
     dispatch(bought());
+    messageApi.open({
+      type: 'success',
+      content: 'This is a prompt message with custom className and style',
+      className: 'custom-class',
+      style: {
+        marginTop: '5vh',
+      },
+    });
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -69,6 +78,7 @@ const Navbar = () => {
         xs={12}
         className="flex flex-row justify-end items-center gap-x-[10px]"
       >
+        {contextHolder}
         <Badge count={firstItem.length}>
           <Button
             onClick={showModal}
