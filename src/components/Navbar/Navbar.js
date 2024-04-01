@@ -2,13 +2,13 @@ import { DeleteOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge, Button, Col, Divider, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { bought, deleteProduct, availableProduct } from '../Cards/cardSlice';
+import { bought, deleteProduct } from '../Cards/cardSlice';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const firstItem = useSelector((state) => state.product.products);
   const dispatch = useDispatch();
-
+  // FOR MODAL
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -16,7 +16,6 @@ const Navbar = () => {
   const handleOk = () => {
     setIsModalOpen(false);
     dispatch(bought());
-    dispatch(availableProduct());
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -49,13 +48,17 @@ const Navbar = () => {
   // DELETE SINGLE PRODUCT ENABLING A CARD
   const deletitem = (id) => {
     dispatch(deleteProduct(id));
-    dispatch(availableProduct(id));
   };
+  // GRAND TOTAL
+  console.log("firstItem===>", quantity)
+  const grandTotal = firstItem.reduce((total, product) => {
+    return total + ((quantity[product.id] || 0) * product.price);
+  }, 0);
 
   return (
-    <Row className="flex justify-center items-center fixed h-[100px] w-[100%] px-[60px] top-0  bg-[#f0f8ff] z-50">
+    <Row className="flex justify-center items-center fixed h-[100px] w-[100%] px-[60px] top-0  bg-white z-50 shadow-xl">
       <Col lg={12} md={12} sm={12} xs={12}>
-        <Link to='/'>
+        <Link to="/">
           <h1 className="font-medium text-[24px]">Home</h1>
         </Link>
       </Col>
@@ -82,32 +85,37 @@ const Navbar = () => {
           onCancel={handleCancel}
           width={650}
           footer={[
-            <Button key="back" onClick={handleCancel}>
-              Cancel
-            </Button>,
-            <Button key="submit" onClick={handleOk}>
-              Buy These
-            </Button>,
+            <div className="flex justify-between">
+              <h2>Grand Total- ${grandTotal}</h2>
+              <div>
+                <Button className='mr-[10px]' key="back" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button key="submit" onClick={handleOk}>
+                  Buy These
+                </Button>
+              </div>
+            </div>,
           ]}
         >
           <Row className="flex justify-between font-bold">
-            <Col md={5} sm={5} xs={5} className="flex justify-start">
+            <Col md={5} sm={5} xs={5} className="flex justify-start items-center">
               Name
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center">
+            <Col md={5} sm={5} xs={5} className="flex justify-center items-center">
               Quantity
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center pl-8">
+            <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
               Price
             </Col>
-            <Col md={5} sm={5} xs={5} className="flex justify-center pl-8">
+            <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
               Total
             </Col>
             <Divider className="my-[8px]" />
           </Row>
           {firstItem.map((product) => (
             <Row key={product.id} className="flex justify-between">
-              <Col md={5} sm={5} xs={5} className="flex justify-start">
+              <Col md={5} sm={5} xs={5} className="flex justify-start items-center">
                 {product.name}
               </Col>
               <Col
@@ -130,10 +138,10 @@ const Navbar = () => {
                   +
                 </Button>
               </Col>
-              <Col md={5} sm={5} xs={5} className="flex justify-center pl-8">
+              <Col md={5} sm={5} xs={5} className="flex justify-center items-center pl-8">
                 ${product.price}
               </Col>
-              <Col md={5} sm={5} xs={5} className="flex justify-end gap-x-1">
+              <Col md={5} sm={5} xs={5} className="flex justify-end items-center gap-x-1">
                 <div>${(quantity[product.id] || 0) * product.price}</div>
                 <Button
                   onClick={() => deletitem(product.id)}
