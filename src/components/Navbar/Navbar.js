@@ -19,7 +19,7 @@ const Navbar = () => {
     dispatch(bought());
     messageApi.open({
       type: 'success',
-      content: 'This is a prompt message with custom className and style',
+      content: 'Happy Shopping. Thank you for your purchase!',
       className: 'custom-class',
       style: {
         marginTop: '5vh',
