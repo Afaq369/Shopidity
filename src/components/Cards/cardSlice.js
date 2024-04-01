@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   products: [],
-  isCartEmpty: true,
 };
 
 const productSlice = createSlice({
@@ -10,9 +9,8 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     carted: (state, action) => {
-      const { productId, Name, Price } = action.payload;
-      state.products.push({ id: productId, name: Name, price: Price });
-      // console.log("CARTED==>",action.payload)
+      const { productId, Name, Price, Decs, Src } = action.payload;
+      state.products.push({ id: productId, name: Name, price: Price, decs:Decs, src:Src });
     },
     bought: (state) => {
       state.products = [];
@@ -26,20 +24,8 @@ const productSlice = createSlice({
         state.products.splice(indexToDelete, 1);
       }
     },
-    availableProduct: (state, action) => {
-      const restoreProduct = action.payload
-      const indexToRestore = state.products.findIndex(
-        (product) => product.id === restoreProduct
-      );
-      if (indexToRestore) {
-        state.isCartEmpty = false;
-        
-      }
-      // console.log("isCartEmpty===>",state.isCartEmpty)
-      // console.log("isCartEmpty===>",indexToRestore)
-    }
   },
 });
 
 export default productSlice.reducer;
-export const { bought, carted, deleteProduct, availableProduct } = productSlice.actions;
+export const { bought, carted, deleteProduct } = productSlice.actions;
